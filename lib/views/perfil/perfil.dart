@@ -310,7 +310,7 @@ class _perfilState extends State<perfil> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => confirmacao(),
+                                    builder: (context) => Confirmacao(idClientes: widget.idClientes, idCredenciado: widget.idCredenciado, tipoQuadra: selectedModality, data: converterData()),
                                   ),
                                 );
                               }
@@ -340,4 +340,17 @@ class _perfilState extends State<perfil> {
       liberado = !aux;
     });
   }
+
+  DateTime converterData(){
+    DateTime data = DateTime.now();
+    try {
+      var aux = '${selectedDate.year}-${selectedDate.month}-${selectedDate.day} $selectedHour:00';
+       data = DateTime.parse(
+          '${selectedDate.year}-${selectedDate.month.toString().padLeft(2,'0')}-${selectedDate.day.toString().padLeft(2,'0')} $selectedHour:00');
+    } catch (e) {
+      print(e);
+    }
+    return data;
+  }
+
 }

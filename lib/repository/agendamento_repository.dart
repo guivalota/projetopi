@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
+import 'package:projetopi/model/agendamento.dart';
 
 import '../constants.dart';
 
@@ -24,7 +25,7 @@ class AgendamentoRepository extends Disposable {
     return false;
   }
 
-  Map<String, dynamic> VericaDisponibilidadeQuadratoJson(
+  /*Map<String, dynamic> VericaDisponibilidadeQuadratoJson(
       DateTime data, int idQuadra, int idCredenciado) {
     var json = {
       "data":
@@ -32,9 +33,20 @@ class AgendamentoRepository extends Disposable {
       "idQuadra": idQuadra,
       "idCredenciado": idCredenciado
     };
-
     return json;
+  }*/
+  Future<String> cadastrarAgendamento(Agendamento a) async{
+    try{
+      var retorno = await http.post(Uri.parse("${caminhoApi}Cadastrar/"),
+          body: a.toJson());
+      var aux = retorno.body;
+      return aux;
+    }catch (e){
+      print(e.toString());
+      return "Ocorreu um erro!";
+    }
   }
+
 
   @override
   void dispose() {}

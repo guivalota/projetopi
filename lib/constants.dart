@@ -1,3 +1,3 @@
 class Variaveis {
-  final String IpAPI = "http://192.168.15.2:9090";
+  final String IpAPI = "http://10.24.254.172:9090";
 }
