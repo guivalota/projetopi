@@ -3,22 +3,38 @@ import 'dart:convert';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 
-class AgendamentoRepository extends Disposable {
-  var caminhoApi = "http://10.24.254.172:9090/api/Agendamento/";
+import '../constants.dart';
 
-  Future<bool> VerificarDisponibilidadeQuadra(DateTime data, int idQuadra, int idCredenciado) async {
+class AgendamentoRepository extends Disposable {
+  var caminhoApi = "${Variaveis().IpAPI}/api/Agendamento/";
+
+  Future<bool> VerificarDisponibilidadeQuadra(
+      DateTime data, int idQuadra, int idCredenciado) async {
     try {
-      var aux  = "${caminhoApi}VerificarDisponibilidadeQuadra?data=${data.toString()}&idQuadra=$idQuadra&idCredenciado=$idCredenciado";
-      var retorno = await http.get(Uri.parse("${caminhoApi}VerificarDisponibilidadeQuadra?data=${data.toString()}&idQuadra=$idQuadra&idCredenciado=$idCredenciado"));
-      return json.decode(retorno.body);
+      String datetimeStr = data.toIso8601String();
+      String encodedDatetimeStr = Uri.encodeComponent(datetimeStr);
+      var retorno = await http.get(Uri.parse(
+          "${caminhoApi}VerificaDisponibilidade?data=$encodedDatetimeStr&idQuadra=$idQuadra&idCredenciado=$idCredenciado"));
+      if (retorno.body == "true") {
+        return true;
+      }
     } catch (e) {
       print(e.toString());
     }
     return false;
   }
 
+  Map<String, dynamic> VericaDisponibilidadeQuadratoJson(
+      DateTime data, int idQuadra, int idCredenciado) {
+    var json = {
+      "data":
+          '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')} ${data.hour.toString().padLeft(2, '0')}:${data.minute.toString().padLeft(2, '0')}:00',
+      "idQuadra": idQuadra,
+      "idCredenciado": idCredenciado
+    };
 
-
+    return json;
+  }
 
   @override
   void dispose() {}

@@ -8,12 +8,13 @@ import 'package:projetopi/views/confirmaagendamento/confirmacao.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class perfil extends StatefulWidget {
-   perfil({Key? key, required this.idClientes, required this.idCredenciado}) : super(key:key);
+  perfil({Key? key, required this.idClientes, required this.idCredenciado})
+      : super(key: key);
 
   final idClientes;
   final idCredenciado;
   @override
- State<StatefulWidget> createState() {
+  State<StatefulWidget> createState() {
     return _perfilState();
   }
 }
@@ -23,10 +24,11 @@ class _perfilState extends State<perfil> {
   String selectedModality = 'BeachTennis'; // Initial modality
   DateTime selectedDate = DateTime.now(); // Initial date
   String selectedHour = '09:00'; // Initial hour
-
+  bool liberado = false;
   @override
   void initState() {
     initializeDateFormatting("pt_BR");
+    verificarDisponibilidade();
     super.initState();
   }
 
@@ -34,20 +36,20 @@ class _perfilState extends State<perfil> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
-          color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new_rounded),
+            color: Colors.black,
+          ),
+          title: Text(
+            'Cadastrar',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-        title: Text(
-          'Cadastrar',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,9 +58,10 @@ class _perfilState extends State<perfil> {
                 children: [
                   Container(
                     height: 200, // Altura da capa
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/img/arenamdcapa.jpg'), // Imagem de capa
+                        image: AssetImage(
+                            'assets/img/arenamdcapa.jpg'), // Imagem de capa
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -69,8 +72,9 @@ class _perfilState extends State<perfil> {
                     bottom: 0,
                     child: Container(
                       height: 40,
-                      decoration:  BoxDecoration(
-                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.vertical(bottom: Radius.circular(20)),
                       ),
                     ),
                   ),
@@ -78,21 +82,22 @@ class _perfilState extends State<perfil> {
               ),
               Container(
                 child: Padding(
-                  padding:  EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                           CircleAvatar(
+                          CircleAvatar(
                             radius: 50, // Tamanho da foto de perfil
-                            backgroundImage: AssetImage('assets/img/arenamd.png'), // Foto de perfil
+                            backgroundImage: AssetImage(
+                                'assets/img/arenamd.png'), // Foto de perfil
                           ),
-                           SizedBox(width: 20),
+                          SizedBox(width: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Text(
+                              Text(
                                 'Arena MD',
                                 style: TextStyle(
                                   fontSize: 20,
@@ -108,7 +113,7 @@ class _perfilState extends State<perfil> {
                               ),
                             ],
                           ),
-                           Spacer(),
+                          Spacer(),
                           Image.asset(
                             'assets/img/certificado.png', // Pequena imagem
                             height: 100,
@@ -116,15 +121,15 @@ class _perfilState extends State<perfil> {
                           ),
                         ],
                       ),
-                       SizedBox(height: 20),
-                       Text(
+                      SizedBox(height: 20),
+                      Text(
                         'Modalidades',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                       ListTile(
+                      ListTile(
                         title: Text(
                           'BeachTennis',
                           style: TextStyle(
@@ -134,7 +139,7 @@ class _perfilState extends State<perfil> {
                         subtitle: Text('a partir'),
                         trailing: Text('R\$ 100,00'),
                       ),
-                       ListTile(
+                      ListTile(
                         title: Text(
                           'Volei',
                           style: TextStyle(
@@ -149,7 +154,7 @@ class _perfilState extends State<perfil> {
                   ),
                 ),
               ),
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Center(
                 child: CarouselSlider(
                   options: CarouselOptions(
@@ -160,8 +165,8 @@ class _perfilState extends State<perfil> {
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval:  Duration(seconds: 3),
-                    autoPlayAnimationDuration:  Duration(milliseconds: 800),
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
                     onPageChanged: (index, reason) {},
@@ -178,7 +183,7 @@ class _perfilState extends State<perfil> {
                       builder: (BuildContext context) {
                         return Container(
                           width: MediaQuery.of(context).size.width,
-                          margin:  EdgeInsets.symmetric(horizontal: 5.0),
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             image: DecorationImage(
@@ -194,11 +199,11 @@ class _perfilState extends State<perfil> {
               ),
               // Wrap the new column with a Container for padding
               Container(
-                padding:  EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Text(
                       'Modalidade',
                       style: TextStyle(
@@ -214,15 +219,19 @@ class _perfilState extends State<perfil> {
                           verificarDisponibilidade();
                         });
                       },
-                      items: <String>['BeachTennis', 'Volei', 'Futebol', 'Outra']
-                          .map<DropdownMenuItem<String>>((String value) {
+                      items: <String>[
+                        'BeachTennis',
+                        'Volei',
+                        'Futebol',
+                        'Outra'
+                      ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
                     ),
-                     SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Text(
                       'Data',
                       style: TextStyle(
@@ -243,7 +252,7 @@ class _perfilState extends State<perfil> {
                         headerStyle: HeaderStyle(
                           formatButtonVisible: false,
                         ),
-                        calendarStyle:  CalendarStyle(
+                        calendarStyle: CalendarStyle(
                           selectedDecoration: BoxDecoration(
                             color: Color.fromARGB(255, 33, 243, 86),
                             shape: BoxShape.circle,
@@ -264,7 +273,7 @@ class _perfilState extends State<perfil> {
                         },
                       ),
                     ),
-                     SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Text(
                       'Horário',
                       style: TextStyle(
@@ -281,7 +290,7 @@ class _perfilState extends State<perfil> {
                         });
                       },
                       items: List.generate(24, (index) {
-                        String hour = index.toString().padLeft(2, '0') + ':00';
+                        String hour = '${index.toString().padLeft(2, '0')}:00';
                         return DropdownMenuItem<String>(
                           value: hour,
                           child: Text(hour),
@@ -290,22 +299,26 @@ class _perfilState extends State<perfil> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("Teste"),
+                      child: Text(liberado ? "Quadra Vaga" : "Quadra ocupada", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: liberado ? Colors.green : Colors.red),),
                     ),
-                     SizedBox(height: 30),
+                    SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => confirmacao(),
-                            ),
-                          );
-                        },
+                        onPressed: liberado
+                            ? () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => confirmacao(),
+                                  ),
+                                );
+                              }
+                            : null,
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Colors.black, // Cor das letras branca
+                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              Colors.black, // Cor das letras branca
                         ),
                         child: Text('Confirmar'),
                       ),
@@ -320,9 +333,11 @@ class _perfilState extends State<perfil> {
     );
   }
 
-  Future<void> verificarDisponibilidade() async{
-    controller.VerificarDisponibilidadeQuadra(selectedModality, selectedDate, selectedHour, widget.idCredenciado);
+  Future<void> verificarDisponibilidade() async {
+    var aux = await controller.VerificarDisponibilidadeQuadra(
+        selectedModality, selectedDate, selectedHour, widget.idCredenciado);
+    setState(() {
+      liberado = !aux;
+    });
   }
-
-
 }
